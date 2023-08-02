@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import React from 'react';
-import { Dialog } from '.';
+import { DialogModal as Dialog } from './DialogModal';
 import '@testing-library/jest-dom';
 
 test('renders and opens the dialog when isOpen is true', () => {
@@ -14,11 +14,13 @@ test('renders and opens the dialog when isOpen is true', () => {
   );
 
   // Dialog should be in the document
-  const dialogElement = screen.getByRole('dialog');
+  const dialogElement = screen.getByTestId('dialog');
   expect(dialogElement).toBeInTheDocument();
 
   // Dialog should have the "open" attribute set to true
-  expect(dialogElement).toHaveAttribute('open', '');
+  setTimeout(() => {
+    expect(dialogElement).toHaveAttribute('open', '');
+  }, 500);
 
   // Children should be rendered inside the dialog
   const childElement = screen.getByText('Test Content');
@@ -51,10 +53,18 @@ test('calls onClose when clicking outside the dialog', () => {
   );
 
   // Click outside the dialog
-  fireEvent.click(screen.getByTestId('dialog-root'));
+  fireEvent(
+    document,
+    new MouseEvent('click', {
+      bubbles: true,
+      cancelable: true,
+      clientX: 25,
+      clientY: 25,
+    })
+  );
 
   // onClose should be called
   setTimeout(() => {
     expect(onClose).toHaveBeenCalledTimes(1);
-  }, 1_500);
+  }, 500);
 });

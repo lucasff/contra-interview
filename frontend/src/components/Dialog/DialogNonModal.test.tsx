@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import React from 'react';
-import { Dialog } from '.';
+import { DialogNonModal as Dialog } from './DialogNonModal';
 import '@testing-library/jest-dom';
 
 test('renders and opens the dialog when isOpen is true', () => {
